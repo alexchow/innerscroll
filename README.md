@@ -20,4 +20,4 @@ Usage
 -----
 `$(selector).innerscroll({
     destination: $(selector2)
-});`
+    });`
