@@ -1,3 +1,7 @@
+//Copyright 2011, Alexander Chow
+//Licensed under the MIT license
+// https://github.com/jquery/jquery/blob/master/MIT-LICENSE.txt
+
 (function($, w, m, i) {
     
     i = $.fn.innerscroll = function(options) {
