@@ -77,8 +77,13 @@
         init: function(target, options) {            
             
             // set default for options
-            if (!(options.draggable === 'false')) {
+            if (!((options.draggable === 'false') || (options.draggable === false))) {
+                // draggable default is true
                 options.draggable = true;
+            }
+            if (!((options.autoFadeout === 'false') || (options.autoFadeout === false))) {
+                // autoFadeout default is true
+                options.autoFadeout = true;
             }
             
             // data to be passed to event handler functions
@@ -109,8 +114,10 @@
             target.css({
                 'overflow-y': 'auto',
                 'overflow-x': 'hidden'
-            }).bind(i.events.moveThumbs, data, i.moveThumbs).bind(i.events.mouseenter, data, i.mouseenter);
-            data.destination.bind(i.events.mousemove, data, i.mousemove).bind(i.events.mouseleave, data, i.mouseleave);
+            }).bind(i.events.moveThumbs, data, i.moveThumbs);
+            i.bindMouseenter(data);
+            i.bindMousemove(data);
+            i.bindMouseleave(data);
             
             
             data.thumbs = {};       // put the thumbs objects here
@@ -128,7 +135,9 @@
             
             data.tracks.vertical.prepend(data.thumbs.vertical);
             data.destination.prepend(data.tracks.vertical);
-            data.thumbs.vertical.fadeTo(i.constants.fadeSlow, 0);
+            if (options.autoFadeout) {
+                data.thumbs.vertical.fadeTo(i.constants.fadeSlow, 0);
+            }
             
             if(options.draggable && $.isFunction($.fn.draggable)) {
                 data.thumbs.vertical.draggable({
@@ -153,8 +162,10 @@
                         i.hideThumbs(data);         
                         data.opacityLocked = false;             
                         // reregister other listeners
-                        data.destination.bind(i.events.mousemove, data, i.mousemove).bind(i.events.mouseleave, data, i.mouseleave);
-                        target.bind(i.events.moveThumbs, data, i.moveThumbs).bind(i.events.mouseenter, data, i.mouseenter);         
+                        i.bindMouseleave(data);
+                        i.bindMousemove(data);
+                        i.bindMouseenter(data);
+                        target.bind(i.events.moveThumbs, data, i.moveThumbs);
                     }
                 });
             }
@@ -164,8 +175,8 @@
         removerFactory: function(target, data) {
             return function() {
                 target.css(data.originalCSS).unbind(i.events.moveThumbs, i.moveThumbs)
-                .unbind(i.events.flashThumbs, i.flashThumbs)
-                .unbind(i.events.mousemove, i.mousemove);
+                .unbind(i.events.mouseenter, i.mouseenter);
+                data.destination.unbind(i.events.mousemove, i.mousemove).unbind(i.events.mouseleave, i.mouseleave)
                 if (data.thumbs) {
                     if (data.thumbs.horizontal) {
                         data.thumbs.horizontal.remove();
@@ -175,6 +186,24 @@
                     }
                 }
             };
+        },
+        
+        bindMouseenter: function (data) {
+            if (data.options.autoFadeout) {
+                data.target.bind(i.events.mouseenter, data, i.mouseenter);
+            }
+        },
+        
+        bindMousemove: function(data) {
+            if (data.options.autoFadeout) {
+                data.destination.bind(i.events.mousemove, data, i.mousemove);
+            }
+        },
+        
+        bindMouseleave: function(data) {
+            if (data.options.autoFadeout) {
+                data.destination.bind(i.events.mouseleave, data, i.mouseleave);
+            }
         },
         
         flashThumbs: function(event) {
@@ -241,15 +270,17 @@
         },
         
         hideThumbs: function(data) {
-            if (data.hideThumbsTimeout) {
-                clearTimeout(data.hideThumbsTimeout);
-            }
-            data.hideThumbsTimeout = setTimeout(function() {
-                data.hideThumbsTimeout = undefined;
-                if (!data.opacityLocked) {
-                    data.thumbs.vertical.stop(true, true).fadeTo(i.constants.fadeFast, 0);
+            if (data.options.autoFadeout) {
+                if (data.hideThumbsTimeout) {
+                    clearTimeout(data.hideThumbsTimeout);
                 }
-            }, 200);
+                data.hideThumbsTimeout = setTimeout(function() {
+                    data.hideThumbsTimeout = undefined;
+                    if (!data.opacityLocked) {
+                        data.thumbs.vertical.stop(true, true).fadeTo(i.constants.fadeFast, 0);
+                    }
+                }, 200);
+            }
         },
         
         getSizing: function(target, dest) {
