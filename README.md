@@ -19,6 +19,33 @@ Licensed under the MIT license
 
 Usage
 -----
-`$(selector).innerscroll({
-    destination: $(selector2)
-    });`
+(Requires jQuery and jQuery UI Draggable)
+
+Basic:
+
+<pre>$(content).innerscroll({
+    destination: $(wrapper),
+});</pre>
+
+where `content` is the DOM element that is overflowing and `wrapper` is content's immediate parent with almost identical dimensions (but only a slightly smaller width to hide the browser's native scrollbars).
+
+With options:
+
+<pre>$(selector).innerscroll(options);</pre>
+
++ `selector`
+    Selects for the overflowing element to which you want to apply innerscroll
++ `options`
+    Required JavaScript object (but only one of its properties is required)
+    * `options.destination` `{jQuery: undefined}`
+        - Required. The DOM element (or jQuery-selected DOM element) that is the immediate parent of `selector` (the target) that is meant to simply wrap `selector` and thus has almost identical dimensions (only slightly smaller width to hide the browser's native scrollbars)
+    * `options.draggable` `{Boolean: true}`
+        - Optional. Set to false to disable dragging of the innerscroll's scrollbar thumb
+    * `options.autoFadeout` `{Boolean: true}`
+        - Optional. Set to false to disable the automatic hiding (fading out) of the innerscroll's scrollbar thumb.
+        
+Notes
+-----
+jQuery is required and the jQuery UI Draggable interaction is required for dragging functionality (dragging of the thumb will not work without it). 
+
+When you have an overflowing DOM element to which you would like to apply innerscroll, simply wrap it inside a wrapper element. Then, try applying innerscroll to the target with the wrapper as the `destination`. Adjust the dimensions on the wrapper accordingly to hide the native scrollbars.
