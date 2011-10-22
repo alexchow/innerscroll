@@ -132,7 +132,8 @@
             
             if(options.draggable && $.isFunction($.fn.draggable)) {
                 data.thumbs.vertical.draggable({
-                    containment: data.tracks.vertical,
+                    containment: 'parent',
+                    axis:'y',
                     cursor: 'pointer',
                     scroll: false,
                     start: function() {
