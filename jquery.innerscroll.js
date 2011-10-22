@@ -112,11 +112,46 @@
             data.tracks = {};       // put the tracks objects here
             
             data.tracks.vertical = $('<div/>').css(i.getTrackCSS(data.sizing.tracks.vertical));
-            data.thumbs.vertical = $('<div/>').css(i.getThumbCSS(data.sizing.thumbs.vertical)).fadeTo(0, i.constants.thumbOpacity);
+            data.thumbs.vertical = $('<div/>').css(i.getThumbCSS(data.sizing.thumbs.vertical))
+                .css({
+                    '-moz-user-select': '-moz-none',
+                    '-khtml-user-select': 'none',
+                    '-webkit-user-select': 'none',
+                    '-user-select': 'none',
+                    'cursor': 'pointer'
+                }).fadeTo(0, i.constants.thumbOpacity);
             
-            data.destination.prepend(data.tracks.vertical);
             data.tracks.vertical.prepend(data.thumbs.vertical);
-            data.thumbs.vertical.fadeTo(i.constants.fadeSlow, 0)
+            data.destination.prepend(data.tracks.vertical);
+            data.thumbs.vertical.fadeTo(i.constants.fadeSlow, 0);
+            
+            if(options.draggable && $.isFunction($.fn.draggable)) {
+                data.thumbs.vertical.draggable({
+                    containment: data.tracks.vertical,
+                    cursor: 'pointer',
+                    scroll: false,
+                    start: function() {
+                        // drag started. Deregister all other listeners
+                        target.unbind(i.events.moveThumbs, i.moveThumbs).unbind(i.events.mouseenter, i.mouseenter);         
+                        data.destination.unbind(i.events.mousemove, i.mousemove).unbind(i.events.mouseleave, i.mouseleave);
+                        // lock the opacity
+                        data.opacityLocked = true;
+                        data.thumbs.vertical.stop(true, true).fadeTo(i.constants.fadeFast, i.constants.thumbOpacity);
+
+                    },
+                    drag: function(event, ui) {
+                        data.target.scrollTop(data.thumbs.vertical.position().top * data.sizing.getTargetScrollHeight() / data.sizing.getTargetHeight());
+                    },
+                    stop: function() {
+                        // release opacity lock
+                        i.hideThumbs(data);         
+                        data.opacityLocked = false;             
+                        // reregister other listeners
+                        data.destination.bind(i.events.mousemove, data, i.mousemove).bind(i.events.mouseleave, data, i.mouseleave);
+                        target.bind(i.events.moveThumbs, data, i.moveThumbs).bind(i.events.mouseenter, data, i.mouseenter);         
+                    }
+                });
+            }
         },
         
         // a factory which will create deconstructor functions
@@ -208,7 +243,7 @@
                 if (!data.opacityLocked) {
                     data.thumbs.vertical.stop(true, true).fadeTo(i.constants.fadeFast, 0);
                 }
-            }, 600);
+            }, 200);
         },
         
         getSizing: function(target, dest) {
