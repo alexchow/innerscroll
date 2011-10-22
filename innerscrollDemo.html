@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style type="text/css">
+        
+        #wrapper1 {
+            height:200px;
+            width:184px;
+            overflow-x:hidden;
+            overflow-y:hidden;
+        }
+        #content1 {
+            height:200px;
+            width:200px;
+            overflow-y:auto;
+            overflow-x:hidden;
+        }
+        
+        .alpha20 {
+            /* Fallback for web browsers that don't support RGBa */
+            background-color: rgb(0, 0, 0);
+            /* RGBa with 0.6 opacity */
+            background-color: rgba(0, 0, 0, 0.2);
+            /* For IE 5.5 - 7*/
+            filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#33000000, endColorstr=#33000000);
+            /* For IE 8*/
+            -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#33000000, endColorstr=#33000000)";
+        }
+        
+        .wrapper .content li {
+            font-weight:lighter;
+            padding:3px 0px;
+            list-style-type: none;
+        }
+        
+        .unselectable {
+            -moz-user-select: -moz-none;
+            -khtml-user-select: none;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        
+    </style>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="jquery.innerscroll.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#content1').innerscroll({
+                destination: $('#wrapper1'),
+                draggable: true
+            });
+
+            // make elements inside the content highlight grey when you mouseover
+            $('.wrapper .content li').addClass('unselectable')
+                .css('cursor','pointer')
+                .each(function(indx, elem) {
+                    $(elem).hover(function() {
+                        $(elem).addClass('alpha20');
+                    }, function() {
+                        $(elem).removeClass('alpha20');
+                    });
+            });
+            
+        });
+    </script>
+</head>
+<body>
+    <div id="wrapper1" class="wrapper">
+        <div id="content1" class="content">
+            <ul>
+            <li>Noemi Rorie</li>
+            <li>Dollie Juergens</li>
+            <li>Darryl Yokley</li>
+            <li>Clinton Selle</li>
+            <li>Julianne Althoff</li>
+            <li>Christian Statham</li>
+            <li>Julio Gloster</li>
+            <li>Althea Byford</li>
+            <li>Fernando Viverette</li>
+            <li>Hugh Remer</li>
+            <li>Annabelle Familia</li>
+            <li>Clinton Nordberg</li>
+            <li>Javier Diemer</li>
+            <li>Clare Tosh</li>
+            <li>Darren Kromer</li>
+            <li>Allan Zylstra</li>
+            <li>Lonnie Kitamura</li>
+            <li>Alejandra Lindauer</li>
+            <li>Saundra Standard</li>
+            <li>Earnestine Sessler</li>
+            <li>Lorrie Acheson</li>
+            <li>Milagros Schwalb</li>
+            <li>Fernando Keala</li>
+            <li>Neil Tims</li>
+            <li>Chandra Dishner</li>
+            <li>Nelson Michna</li>
+            <li>Avis Clendenin</li>
+            <li>Clayton Casavant</li>
+            <li>Kelly Jolin</li>
+            <li>Esmeralda Tarrance</li>
+            <li>Hugh Kreisel</li>
+            <li>Guy Maske</li>
+            <li>Liza Loewen</li>
+            <li>Hugh Peltz</li>
+            <li>Darren Venuti</li>
+            <li>Christian Geissler</li>
+            <li>Tyrone Lamonica</li>
+            <li>Kelly Louden</li>
+            <li>Clinton Whitner</li>
+            <li>Cody Fortes</li>
+            <li>Neva Schultheis</li>
+            <li>Marylou Motter</li>
+            <li>Clinton Donathan</li>
+            <li>Clayton Warf</li>
+            <li>Emilia Plaster</li>
+            </ul>
+        </div>
+    </div>
+</body>
+
+</html>
