@@ -76,6 +76,11 @@
         
         init: function(target, options) {            
             
+            // set default for options
+            if (!(options.draggable === 'false')) {
+                options.draggable = true;
+            }
+            
             // data to be passed to event handler functions
             var data = {
                 target: target,
