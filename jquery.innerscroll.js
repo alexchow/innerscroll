@@ -10,6 +10,7 @@
         //          The scrollbar thumbs will be placed in the destination. Highly recommended to be the parent of the target
         // draggable: Optional. Default is true. Set to false to disable dragging of the scrollbar thumbs
         // autoFadeout: Optional. Set to false to disable the automatic hiding (fading out) of the innerscroll's scrollbar thumb.
+        // leftAdjust: Optional. Default is 0. Use this to manually adjust the left position (in pixels) of the scrollbar. Positive is rightward. 
         
         return this.each(function () {
             i.init($(this), options);
@@ -85,6 +86,7 @@
                 // autoFadeout default is true
                 options.autoFadeout = true;
             }
+            options.leftAdjust = options.leftAdjust || 0;
             
             // data to be passed to event handler functions
             var data = {
@@ -97,7 +99,7 @@
                     'overflow-y': target.css('overflow-y'),
                     'cursor': target.css('cursor')
                 },
-                sizing: i.getSizing(target, $(options.destination)),
+                sizing: i.getSizing(target, $(options.destination), options),
                 opacityLocked: false
             };
             
@@ -283,7 +285,7 @@
             }
         },
         
-        getSizing: function(target, dest) {
+        getSizing: function(target, dest, options) {
             var scrollBarWidth = i.getNativeScrollbarWidth();
             
             var sizing = {
@@ -311,7 +313,7 @@
                 tracks: {
                     horizontal: {},
                     vertical: {
-                        left: target.position().left + target.width() - scrollBarWidth - i.constants.thumbThickness,
+                        left: target.position().left + target.width() - scrollBarWidth - i.constants.thumbThickness + options.leftAdjust,
                         top: target.position().top,
                         height: target.height()
                     }
@@ -360,7 +362,7 @@
             return {
                 position:'absolute',
                 height: size.height + "px",
-                left:size.left+"px",
+                left: size.left +"px",
                 top: size.top+"px"         
             }
         }
