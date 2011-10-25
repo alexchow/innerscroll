@@ -8,8 +8,8 @@
         // valid options:
         // destination: REQUIRED. Must be passed a DOM element (or a jQuery selection of a DOM element). 
         //          The scrollbar thumbs will be placed in the destination. Highly recommended to be the parent of the target
-        // overflow-x: Default is null/undefined (value will be taken from the DOM element). Possible values: visible, hidden, scroll, auto.
-        // overflow-y: Default is null/undefined (value will be taken from the DOM element). Possible values: visible, hidden, scroll, auto.
+        // draggable: Optional. Default is true. Set to false to disable dragging of the scrollbar thumbs
+        // autoFadeout: Optional. Set to false to disable the automatic hiding (fading out) of the innerscroll's scrollbar thumb.
         
         return this.each(function () {
             i.init($(this), options);
