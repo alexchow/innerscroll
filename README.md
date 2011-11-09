@@ -44,7 +44,9 @@ With options:
     * `options.autoFadeout` `{Boolean: true}`
         - Optional. Set to false to disable the automatic hiding (fading out) of the innerscroll's scrollbar thumb.
     * `options.leftAdjust` `{Integer: 0}`
-        - Optional. Use this to manually adjust the left position (in pixels) of the scrollbar. Positive is rightward. 
+        - Optional. Use this to manually adjust the left position (in pixels) of the scrollbar. Positive is rightward.
+    * `options.fadeoutDelay` `{Integer: 200}`
+        - Optional. Use this to manually adjust the delay (in milliseconds) before initiating automatic fadeout of the scroll thumbs.
     
         
 Notes

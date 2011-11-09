@@ -87,6 +87,7 @@
                 options.autoFadeout = true;
             }
             options.leftAdjust = options.leftAdjust || 0;
+            options.fadeoutDelay = options.fadeoutDelay || 200;
             
             // data to be passed to event handler functions
             var data = {
@@ -281,7 +282,7 @@
                     if (!data.opacityLocked) {
                         data.thumbs.vertical.stop(true, true).fadeTo(i.constants.fadeFast, 0);
                     }
-                }, 200);
+                }, data.options.fadeoutDelay);
             }
         },
         
